@@ -1,17 +1,13 @@
 //code to display the current date in the header of the page.
 var timeDisplayEl = $('#time-display');
+var currentTime = dayjs().hour();
 
 function displayTime() {
   var rightNow = dayjs().format('MMM DD, YYYY [at] hh:mm:ss a');
   timeDisplayEl.text(rightNow);
 }
-function colorChange() {
-  $("row").css("color", $(this).css("background-color"));
- }
 
-$("row").click(colorChange);
-
-//listener for click events on the save button. 
+ //listener for click events on the save button. 
 $(".saveBtn").click(function() {
     eventText = $(this).siblings(".input").val();
     console.log(eventText);
@@ -19,19 +15,17 @@ $(".saveBtn").click(function() {
     console.log(eventTime);
     localStorage.setItem(eventTime, JSON.stringify(eventText));
 
-    colorChange ();
     renderText ();
   });
 
 $(document).ready (function() {
-    colorChange();
     renderText();
 });
   
 //code to apply the past, present, or future class to each time
   $(".input").each(function (){
-    var scheduledTime = parseInt($(this).attr("id"));
-    console.log(scheduledTime);
+    var scheduledTime = parseInt($(this).parent().attr("id").split("-")[1]);
+    console.log(dayjs().hour());
 
     if (currentTime > scheduledTime) {
       $(this).removeClass("future");
@@ -49,7 +43,7 @@ $(document).ready (function() {
 });
 
 
-// code to get any user input that was saved in localStorage and set
+//code to get any user input that was saved in localStorage and set
 function renderText () {
   var saveEventText9 = JSON.parse(localStorage.getItem("9AM"));
   $("#9").val("");
